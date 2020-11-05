@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   Map<DateTime, List<dynamic>> _events;
   TextEditingController _eventController;
   List<dynamic> _selectedEvents;
+  SharedPreferences prefs;
 
   @override
   void initState() {
@@ -22,6 +25,15 @@ class _HomePageState extends State<HomePage> {
     _events = {};
     _eventController = TextEditingController();
     _selectedEvents = [];
+    initPrefs();
+  }
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _events = Map<DateTime, List<dynamic>>.from(
+          decodeMap(json.decode(prefs.getString("events") ?? "{}")));
+    });
   }
 
   Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
@@ -107,10 +119,7 @@ class _HomePageState extends State<HomePage> {
               ),
               calendarController: _controller,
             ),
-          ... _selectedEvents.map((event) => ListTile
-            (
-              title: Text(event)
-            ))
+            ..._selectedEvents.map((event) => ListTile(title: Text(event)))
           ],
         ),
       ),
@@ -139,6 +148,7 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   _events[_controller.selectedDay] = [_eventController.text];
                 }
+                prefs.setString("events", json.encode(encodeMap(_events)));
                 _eventController.clear();
                 Navigator.pop(context);
               });
