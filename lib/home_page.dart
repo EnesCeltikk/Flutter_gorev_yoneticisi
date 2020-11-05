@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,11 +11,30 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CalendarController _controller;
-
+  Map<DateTime, List<dynamic>> _events;
+  TextEditingController _eventController;
   @override
   void initState() {
     super.initState();
     _controller = CalendarController();
+    _events = {};
+    _eventController = TextEditingController();
+  }
+
+  Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
+    Map<String, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[key.toString()] = map[key];
+    });
+    return newMap;
+  }
+
+  Map<DateTime, dynamic> decodeMap(Map<String, dynamic> map) {
+    Map<DateTime, dynamic> newMap = {};
+    map.forEach((key, value) {
+      newMap[DateTime.parse(key)] = map[key];
+    });
+    return newMap;
   }
 
   @override
@@ -33,6 +53,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TableCalendar(
+              events: _events,
               locale: 'tr',
               initialCalendarFormat: CalendarFormat.week,
               calendarStyle: CalendarStyle(
@@ -53,7 +74,6 @@ class _HomePageState extends State<HomePage> {
               ),
               startingDayOfWeek: StartingDayOfWeek.monday,
               onDaySelected: (date, events, holiday) {
-                
                 print(date.toIso8601String());
               },
               builders: CalendarBuilders(
@@ -82,6 +102,36 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: _showAddDialog,
+      ),
+    );
+  }
+
+  _showAddDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: TextField(
+          controller: _eventController,
+        ),
+        actions: [
+          FlatButton(
+            child: Text("Kaydet"),
+            onPressed: () {
+              if (_eventController.text.isEmpty) return;
+              setState(() {
+                if (_events[_controller.selectedDay] != null) {
+                  _events[_controller.selectedDay].add(_eventController.text);
+                } else {
+                  _events[_controller.selectedDay] = [_eventController.text];
+                }
+              });
+            },
+          )
+        ],
       ),
     );
   }
