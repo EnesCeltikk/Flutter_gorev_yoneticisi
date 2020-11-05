@@ -13,12 +13,15 @@ class _HomePageState extends State<HomePage> {
   CalendarController _controller;
   Map<DateTime, List<dynamic>> _events;
   TextEditingController _eventController;
+  List<dynamic> _selectedEvents;
+
   @override
   void initState() {
     super.initState();
     _controller = CalendarController();
     _events = {};
     _eventController = TextEditingController();
+    _selectedEvents = [];
   }
 
   Map<String, dynamic> encodeMap(Map<DateTime, dynamic> map) {
@@ -74,32 +77,40 @@ class _HomePageState extends State<HomePage> {
               ),
               startingDayOfWeek: StartingDayOfWeek.monday,
               onDaySelected: (date, events, holiday) {
-                print(date.toIso8601String());
+                setState(() {
+                  _selectedEvents = events;
+                });
               },
               builders: CalendarBuilders(
                 selectedDayBuilder: (context, date, events) => Container(
-                    margin: const EdgeInsets.all(4.0),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Text(
-                      date.day.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
+                  margin: const EdgeInsets.all(4.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Text(
+                    date.day.toString(),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
                 todayDayBuilder: (context, date, events) => Container(
-                    margin: const EdgeInsets.all(4.0),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        color: Colors.orange,
-                        borderRadius: BorderRadius.circular(10.0)),
-                    child: Text(
-                      date.day.toString(),
-                      style: TextStyle(color: Colors.white),
-                    )),
+                  margin: const EdgeInsets.all(4.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Text(
+                    date.day.toString(),
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ),
               calendarController: _controller,
-            )
+            ),
+          ... _selectedEvents.map((event) => ListTile
+            (
+              title: Text(event)
+            ))
           ],
         ),
       ),
@@ -128,6 +139,8 @@ class _HomePageState extends State<HomePage> {
                 } else {
                   _events[_controller.selectedDay] = [_eventController.text];
                 }
+                _eventController.clear();
+                Navigator.pop(context);
               });
             },
           )
