@@ -68,9 +68,6 @@ flutter:
         - asset: assets/fonts/Itim-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-    - family:  CustomIcons
-      fonts:
-        - asset: assets/fonts/CustomIcons.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

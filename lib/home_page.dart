@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +15,8 @@ class _HomePageState extends State<HomePage> {
   TextEditingController _eventController;
   List<dynamic> _selectedEvents;
   SharedPreferences prefs;
-  
+  int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -50,33 +50,55 @@ class _HomePageState extends State<HomePage> {
     });
     return newMap;
   }
+
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('tr');
-  
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orange[300],
         title: Text(
           'Flutter Görev Yöneticisi (Günlük)',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 22),
+          style: TextStyle(fontSize: 20, color: Colors.black),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.blue,
+        selectedFontSize: 20,
+        unselectedFontSize: 14,
+        // backgroundColor: Colors.orange[300],
+        currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.gunluk,size: 20,),
-            label: "",
+            icon: Icon(
+              Icons.calendar_today,
+              size: 25,
+            ),
+            backgroundColor: Colors.pink,
+            label: "Günlük",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.haftalik,size: 20,),
-            label: "",
+            icon: Icon(
+              Icons.calendar_today,
+              size: 25,
+            ),
+            label: "Haftalık",
           ),
-            BottomNavigationBarItem(
-            icon: Icon(CustomIcons.aylik, size: 20,),
-            label: "",
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.calendar_today,
+              size: 25,
+            ),
+            label: "Aylık",
           )
         ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
       body: SingleChildScrollView(
         child: Column(
