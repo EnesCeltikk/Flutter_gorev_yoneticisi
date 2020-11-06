@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
     _events = {};
     _eventController = TextEditingController();
     _selectedEvents = [];
-   
 
     initPrefs();
   }
@@ -64,8 +63,43 @@ class _HomePageState extends State<HomePage> {
           'Flutter Görev Yöneticisi (Günlük)',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 20, color: Colors.black),
+        ),),
+        bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.blue,
+          selectedFontSize: 20,
+          unselectedFontSize: 14,
+          // backgroundColor: Colors.orange[300],
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.calendar_today,
+                size: 25,
+              ),
+              backgroundColor: Colors.pink,
+              label: "Günlük",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.calendar_today,
+                size: 25,
+              ),
+              label: "Haftalık",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.calendar_today,
+                size: 25,
+              ),
+              label: "Aylık",
+            )
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
         ),
-      ),
       
       body: SingleChildScrollView(
         child: Column(
