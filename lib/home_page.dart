@@ -65,15 +65,15 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.g_nl_k,size: 20,),
+            icon: Icon(CustomIcons.gunluk,size: 20,),
             label: "",
           ),
           BottomNavigationBarItem(
-            icon: Icon(CustomIcons.haftal_k,size: 20,),
+            icon: Icon(CustomIcons.haftalik,size: 20,),
             label: "",
           ),
             BottomNavigationBarItem(
-            icon: Icon(CustomIcons.ayl_k, size: 20,),
+            icon: Icon(CustomIcons.aylik, size: 20,),
             label: "",
           )
         ],
