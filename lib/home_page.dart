@@ -1,8 +1,7 @@
 import 'dart:convert';
-
+import 'custom_icons_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -17,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   TextEditingController _eventController;
   List<dynamic> _selectedEvents;
   SharedPreferences prefs;
-
+  
   @override
   void initState() {
     super.initState();
@@ -51,17 +50,33 @@ class _HomePageState extends State<HomePage> {
     });
     return newMap;
   }
-
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting('tr');
+  
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Flutter Görev Yöneticisi',
+          'Flutter Görev Yöneticisi (Günlük)',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 25),
+          style: TextStyle(fontSize: 22),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(CustomIcons.g_nl_k,size: 20,),
+            label: "",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CustomIcons.haftal_k,size: 20,),
+            label: "",
+          ),
+            BottomNavigationBarItem(
+            icon: Icon(CustomIcons.ayl_k, size: 20,),
+            label: "",
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -70,18 +85,19 @@ class _HomePageState extends State<HomePage> {
             TableCalendar(
               events: _events,
               locale: 'tr',
-              initialCalendarFormat: CalendarFormat.week,
+              initialCalendarFormat: CalendarFormat.month,
               calendarStyle: CalendarStyle(
-                  todayColor: Colors.orange,
-                  selectedColor: Theme.of(context).primaryColor,
-                  todayStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0,
-                      color: Colors.white)),
+                todayColor: Colors.orange,
+                selectedColor: Theme.of(context).primaryColor,
+                todayStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
+                    color: Colors.white),
+              ),
               headerStyle: HeaderStyle(
                 centerHeaderTitle: true,
                 formatButtonDecoration: BoxDecoration(
-                  color: Colors.orange,
+                  color: Colors.pink,
                   borderRadius: BorderRadius.circular(20.0),
                 ),
                 formatButtonTextStyle: TextStyle(color: Colors.white),
